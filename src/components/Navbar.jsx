@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect } from 'react';
+import logo from '../assets/og-image.svg';
 
 export const Navbar = ({ menuOpen, setMenuOpen }) => {
   useEffect(() => {
@@ -9,8 +10,14 @@ export const Navbar = ({ menuOpen, setMenuOpen }) => {
     <nav className="fixed top-0 w-full z-40 bg-[rgba(10, 10, 10, 0.8)] backdrop-blur-lg border-white/100 shadow-lg">
       <div className="max-w-5xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          <a href="#home" className="font-mono text-xl font-bold text-white">
-            logo<span className="text-blue-500">.here</span>
+          <a
+            href="#home"
+            className="flex items-center space-x-2 text-xl font-bold text-white"
+          >
+            <img src={logo} alt="Logo" className="w-8 h-8" />
+            <span className="font-sans">
+              Grant<span className="text-blue-500">.dev</span>
+            </span>
           </a>
 
           <div

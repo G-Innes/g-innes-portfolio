@@ -3,9 +3,15 @@
 html, body {
   margin: 0;
   padding: 0;
-  font-family: 'Space grotesk', sans-serif;
+  font-family: 'Noto Sans', sans-serif;
   background-color: black;
   color: azure;
+  font-weight: 300; /* Light weight for body text */
+}
+
+/* Headings use heavier weights */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700; /* Bold weight for headings */
 }
 
 @layer utilities {
@@ -31,6 +37,43 @@ html, body {
   }
   .animate-loading-bar {
     animation: loading 0.8s ease infinite;
+  }
+
+  @keyframes spin-slow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .animate-spin-slow {
+    animation: spin-slow 30s linear infinite;
+  }
+
+  @keyframes spin-reverse {
+    from {
+      transform: rotate(360deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
+  }
+  
+  .animate-spin-reverse {
+    animation: spin-reverse 30s linear infinite;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translate(-50%, 10px);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
   }
 }
 
