@@ -33,12 +33,11 @@ export const TechWheel = () => {
     <div className="relative w-96 h-96 mx-auto">
       {/* Counter-rotating border */}
       <div
-        className={`absolute inset-0 rounded-full border-2 border-blue-500/30 ${
-          isHovered ? 'animate-none' : 'animate-spin-reverse'
-        }`}
+        className={`absolute inset-0 rounded-full border-2 border-blue-500/30 animate-spin-reverse`}
         style={{
           animationDuration: '30s',
           transformOrigin: 'center',
+          animationPlayState: isHovered ? 'paused' : 'running',
         }}
       ></div>
 
@@ -54,22 +53,21 @@ export const TechWheel = () => {
           setHoveredTech('');
         }}
       >
+        {/* Center circle (kept static, not rotating) */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full flex items-center justify-center z-20 shadow-lg pointer-events-none">
+          <span className="text-black text-base font-bold text-center px-1">
+            {hoveredTech || 'Tech'}
+          </span>
+        </div>
+
         <div
-          className={`w-full h-full ${
-            isHovered ? 'animate-none' : 'animate-spin-slow'
-          }`}
+          className={`w-full h-full animate-spin-slow`}
           style={{
             animationDuration: '30s',
             transformOrigin: 'center',
+            animationPlayState: isHovered ? 'paused' : 'running',
           }}
         >
-          {/* Center circle */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full flex items-center justify-center z-20 shadow-lg">
-            <span className="text-black text-base font-bold text-center px-1">
-              {hoveredTech || 'Tech'}
-            </span>
-          </div>
-
           {/* Tech icons positioned around the circle */}
           {techIcons.map((tech, index) => {
             const angle = (index * 360) / techIcons.length;
