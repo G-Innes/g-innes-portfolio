@@ -1,60 +1,77 @@
 /* eslint-disable react/prop-types */
-import { useEffect } from 'react';
+import { useState } from 'react';
 import logo from '../assets/og-image.svg';
+import {
+  Navbar as ResizableNavbar,
+  NavBody,
+  NavItems,
+  MobileNav,
+  MobileNavHeader,
+  MobileNavMenu,
+  MobileNavToggle,
+} from './ui/resizable-navbar';
 
-export const Navbar = ({ menuOpen, setMenuOpen }) => {
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : '';
-  }, [menuOpen]);
+export const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const navItems = [
+    { name: 'Home', link: '#home' },
+    { name: 'About', link: '#about' },
+    { name: 'Projects', link: '#projects' },
+    { name: 'Contact', link: '#contact' },
+  ];
+
   return (
-    <nav className="fixed top-0 w-full z-40 bg-[rgba(10, 10, 10, 0.8)] backdrop-blur-lg border-white/100 shadow-lg">
-      <div className="max-w-5xl mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
+    <ResizableNavbar>
+      {/* Desktop Navbar */}
+      <NavBody>
+        <a
+          href="#home"
+          className="relative z-20 flex items-center space-x-2 text-xl font-bold text-white"
+        >
+          <img src={logo} alt="Logo" className="w-8 h-8" />
+          <span className="font-sans">
+            Grant
+            <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 bg-clip-text text-transparent">
+              .dev
+            </span>
+          </span>
+        </a>
+        <NavItems items={navItems} />
+      </NavBody>
+
+      {/* Mobile Navbar */}
+      <MobileNav>
+        <MobileNavHeader>
           <a
             href="#home"
-            className="flex items-center space-x-2 text-xl font-bold text-white"
+            className="relative z-20 flex items-center space-x-2 text-xl font-bold text-white"
           >
             <img src={logo} alt="Logo" className="w-8 h-8" />
             <span className="font-sans">
-              Grant<span className="text-blue-500">.dev</span>
+              Grant
+              <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 bg-clip-text text-transparent">
+                .dev
+              </span>
             </span>
           </a>
-
-          <div
-            className="w-7 h-5 relative cursor-pointer z-40 md:hidden"
-            onClick={() => setMenuOpen(prev => !prev)}
-          >
-            &#9776;
-          </div>
-
-          <div className="hidden md:flex items-center space-x-8">
+          <MobileNavToggle isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
+        </MobileNavHeader>
+        <MobileNavMenu isOpen={isOpen}>
+          {navItems.map((item, idx) => (
             <a
-              href="#home"
-              className="text-gray-300 hover:text-white transition-colors"
+              key={idx}
+              href={item.link}
+              onClick={() => setIsOpen(false)}
+              className="text-lg font-semibold w-full"
             >
-              Home
+              <span className="text-gray-300 hover:text-transparent hover:bg-gradient-to-r hover:from-blue-500 hover:via-cyan-400 hover:to-green-500 hover:bg-clip-text transition-all duration-300 inline-block">
+                {item.name}
+              </span>
             </a>
-            <a
-              href="#about"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              About
-            </a>
-            <a
-              href="#projects"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Projects
-            </a>
-            <a
-              href="#contact"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Contact
-            </a>
-          </div>
-        </div>
-      </div>
-    </nav>
+          ))}
+        </MobileNavMenu>
+      </MobileNav>
+    </ResizableNavbar>
   );
 };

@@ -54,7 +54,7 @@ export const TechWheel = () => {
         }}
       >
         {/* Center circle (kept static, not rotating) */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full flex items-center justify-center z-20 shadow-lg pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 rounded-full flex items-center justify-center z-20 shadow-lg pointer-events-none">
           <span className="text-black text-base font-bold text-center px-1">
             {hoveredTech || 'Tech'}
           </span>
