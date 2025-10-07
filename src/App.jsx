@@ -8,6 +8,7 @@ import { Projects } from './components/sections/Projects';
 import './index.css';
 import { Contact } from './components/sections/Contact';
 import { TracingBeam } from './components/ui/tracing-beam';
+import { Footer } from './components/Footer';
 
 function App() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -28,6 +29,7 @@ function App() {
           <Projects />
           <Contact />
         </TracingBeam>
+        <Footer />
       </div>
     </>
   );
