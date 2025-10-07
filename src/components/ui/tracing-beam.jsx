@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useTransform, useScroll, useSpring } from 'motion/react';
 import { cn } from '@/lib/utils';
 
