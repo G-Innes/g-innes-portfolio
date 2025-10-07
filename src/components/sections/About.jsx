@@ -7,17 +7,17 @@ export const About = () => {
   return (
     <section
       id="about"
-      className="min-h-screen flex items-center justify-center py-20"
+      className="min-h-screen flex items-center justify-center py-20 px-4"
     >
       <RevealOnScroll>
-        <div className="max-w-3xl mx-auto px-4">
+        <div className="w-full max-w-3xl mx-auto">
           <h2
             className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 bg-clip-text
         text-transparent text-center"
           >
             About Me
           </h2>
-          <BackgroundGradient className="rounded-[22px] p-8 bg-zinc-900">
+          <BackgroundGradient className="rounded-[22px] p-4 sm:p-6 md:p-8 bg-zinc-900">
             <p className="text-gray-300 mb-6">
               Passionate Developer with expertise in building scalable web
               applications and creating innovative solutions.
@@ -55,7 +55,7 @@ export const About = () => {
           </BackgroundGradient>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-            <BackgroundGradient className="p-6 rounded-[22px] bg-zinc-900">
+            <BackgroundGradient className="p-4 sm:p-6 rounded-[22px] bg-zinc-900">
               <h3 className="text-xl font-bold mb-4">📚 Education</h3>
               <ul className="list-disc list-inside text-gray-300 space-y-2">
                 <li>
@@ -65,7 +65,7 @@ export const About = () => {
                 <li>Relevant CoiurseworkL: Data structures and algorithms</li>
               </ul>
             </BackgroundGradient>
-            <BackgroundGradient className="p-6 rounded-[22px] bg-zinc-900">
+            <BackgroundGradient className="p-4 sm:p-6 rounded-[22px] bg-zinc-900">
               <h3 className="text-xl font-bold mb-4">💼 Work Experience</h3>
               <div className="space-y-4 text-gray-300">
                 <div>

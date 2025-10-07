@@ -17,7 +17,7 @@ const ProjectCard = ({
         <img src={image} alt={title} className="w-full h-full object-cover" />
       </div>
     )}
-    <div className="p-6">
+    <div className="p-4 sm:p-6">
       <h3 className="text-xl font-bold mb-2">{title}</h3>
       <p className="text-gray-400 mb-4 text-sm leading-relaxed">
         {description}
@@ -105,10 +105,10 @@ export const Projects = () => {
   return (
     <section
       id="projects"
-      className="min-h-screen flex items-center justify-center py-20"
+      className="min-h-screen flex items-center justify-center py-20 px-4"
     >
       <RevealOnScroll>
-        <div className="max-w-5xl mx-auto px-4">
+        <div className="w-full max-w-5xl mx-auto">
           <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 bg-clip-text text-transparent text-center">
             Featured Projects
           </h2>
