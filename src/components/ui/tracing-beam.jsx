@@ -56,7 +56,7 @@ export const TracingBeam = ({ children, className }) => {
       className={cn('relative mx-auto h-full w-full max-w-7xl', className)}
     >
       {svgHeight > 0 && (
-        <div className="absolute top-3 -left-4 md:-left-20 hidden md:block">
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 lg:left-12 lg:translate-x-0 xl:left-8">
           <motion.div
             transition={{
               duration: 0.2,
