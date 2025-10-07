@@ -1,7 +1,107 @@
+/* eslint-disable react/prop-types */
 import { RevealOnScroll } from '../RevealOnScroll';
 import { BackgroundGradient } from '../ui/background-gradient';
+import FFHero from '../../assets/FF-hero.png';
+
+const ProjectCard = ({
+  title,
+  description,
+  image,
+  tech,
+  liveUrl,
+  githubUrl,
+}) => (
+  <BackgroundGradient className="rounded-[22px] bg-zinc-900 overflow-hidden">
+    {image && (
+      <div className="w-full h-48 overflow-hidden rounded-t-[20px]">
+        <img src={image} alt={title} className="w-full h-full object-cover" />
+      </div>
+    )}
+    <div className="p-6">
+      <h3 className="text-xl font-bold mb-2">{title}</h3>
+      <p className="text-gray-400 mb-4 text-sm leading-relaxed">
+        {description}
+      </p>
+      <div className="flex flex-wrap gap-2 mb-4">
+        {tech.map((item, idx) => (
+          <span
+            key={idx}
+            className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-xs hover:bg-blue-500/20 hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition-all"
+          >
+            {item}
+          </span>
+        ))}
+      </div>
+      <div className="flex gap-4 items-center">
+        {liveUrl && (
+          <a
+            href={liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-400 hover:text-transparent hover:bg-gradient-to-r hover:from-blue-500 hover:via-cyan-400 hover:to-green-500 hover:bg-clip-text transition-all duration-300 text-sm font-medium"
+          >
+            Live Demo →
+          </a>
+        )}
+        {githubUrl && (
+          <a
+            href={githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-400 hover:text-transparent hover:bg-gradient-to-r hover:from-blue-500 hover:via-cyan-400 hover:to-green-500 hover:bg-clip-text transition-all duration-300 text-sm font-medium"
+          >
+            GitHub →
+          </a>
+        )}
+      </div>
+    </div>
+  </BackgroundGradient>
+);
 
 export const Projects = () => {
+  const projects = [
+    {
+      title: 'Project 1',
+      description: 'Coming soon...',
+      image: null,
+      tech: ['React', 'Node.js', 'AWS'],
+      liveUrl: null,
+      githubUrl: null,
+    },
+    {
+      title: 'Fleet Fox Task Management',
+      description:
+        'Production-ready task management application with categories, priorities, and CSV import/export. Features user isolation, due date tracking, and comprehensive filtering. Built with Laravel 12, Vue 3, and Inertia.js with full PEST test coverage.',
+      image: FFHero,
+      tech: [
+        'Laravel 12',
+        'Vue 3',
+        'Inertia.js',
+        'Tailwind CSS',
+        'PostgreSQL',
+        'PEST',
+      ],
+      liveUrl: 'https://fleet-flow-gilt.vercel.app/',
+      githubUrl: 'https://github.com/G-Innes/FleetFlow',
+    },
+    {
+      title: 'Project 3',
+      description: 'Coming soon...',
+      image: null,
+      tech: ['TypeScript', 'Next.js', 'Docker'],
+      liveUrl: null,
+      githubUrl: null,
+    },
+    {
+      title: 'Project 4',
+      description: 'Coming soon...',
+      image: null,
+      tech: ['Python', 'FastAPI', 'PostgreSQL'],
+      liveUrl: null,
+      githubUrl: null,
+    },
+  ];
+
   return (
     <section
       id="projects"
@@ -9,116 +109,13 @@ export const Projects = () => {
     >
       <RevealOnScroll>
         <div className="max-w-5xl mx-auto px-4">
-          <h2
-            className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 bg-clip-text
-         text-transparent text-center"
-          >
+          <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 bg-clip-text text-transparent text-center">
             Featured Projects
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <BackgroundGradient className="p-6 rounded-[22px] bg-zinc-900">
-              <h3 className="text-xl font-bold mb-2">Cloud Platform1</h3>
-              <p className="text-gray-400 mb-4">
-                Descritpion of project goes here
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                {['React', 'Node.js', 'AWS', 'Docker'].map((tech, key) => (
-                  <span
-                    key={key}
-                    className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-sm hover:bg-blue-500/20 hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition-all"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-
-              <div className="flex justify-between items-center">
-                <a
-                  href="#project page"
-                  className="text-blue-400 hover:text-blue-300 transition-colors my-4"
-                >
-                  View Project (github icon to project page)
-                </a>
-              </div>
-            </BackgroundGradient>
-
-            <BackgroundGradient className="p-6 rounded-[22px] bg-zinc-900">
-              <h3 className="text-xl font-bold mb-2">Cloud Platform2</h3>
-              <p className="text-gray-400 mb-4">
-                Descritpion of project goes here
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                {['React', 'Node.js', 'AWS', 'Docker'].map((tech, key) => (
-                  <span
-                    key={key}
-                    className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-sm hover:bg-blue-500/20 hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition-all"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-
-              <div className="flex justify-between items-center">
-                <a
-                  href="#project page"
-                  className="text-blue-400 hover:text-blue-300 transition-colors my-4"
-                >
-                  View Project (github icon to project page)
-                </a>
-              </div>
-            </BackgroundGradient>
-
-            <BackgroundGradient className="p-6 rounded-[22px] bg-zinc-900">
-              <h3 className="text-xl font-bold mb-2">Cloud Platform3</h3>
-              <p className="text-gray-400 mb-4">
-                Descritpion of project goes here
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                {['React', 'Node.js', 'AWS', 'Docker'].map((tech, key) => (
-                  <span
-                    key={key}
-                    className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-sm hover:bg-blue-500/20 hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition-all"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-
-              <div className="flex justify-between items-center">
-                <a
-                  href="#project page"
-                  className="text-blue-400 hover:text-blue-300 transition-colors my-4"
-                >
-                  View Project (github icon to project page)
-                </a>
-              </div>
-            </BackgroundGradient>
-
-            <BackgroundGradient className="p-6 rounded-[22px] bg-zinc-900">
-              <h3 className="text-xl font-bold mb-2">Cloud Platform4</h3>
-              <p className="text-gray-400 mb-4">
-                Descritpion of project goes here
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                {['React', 'Node.js', 'AWS', 'Docker'].map((tech, key) => (
-                  <span
-                    key={key}
-                    className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-sm hover:bg-blue-500/20 hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition-all"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-
-              <div className="flex justify-between items-center">
-                <a
-                  href="#project page"
-                  className="text-blue-400 hover:text-blue-300 transition-colors my-4"
-                >
-                  View Project (github icon to project page)
-                </a>
-              </div>
-            </BackgroundGradient>
+            {projects.map((project, idx) => (
+              <ProjectCard key={idx} {...project} />
+            ))}
           </div>
         </div>
       </RevealOnScroll>
