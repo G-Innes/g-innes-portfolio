@@ -33,8 +33,8 @@ export const Footer = () => {
                 className="group"
                 aria-label="LinkedIn"
               >
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 p-[2px] hover:p-[3px] transition-all duration-300">
-                  <div className="w-full h-full bg-black rounded-lg flex items-center justify-center group-hover:bg-transparent transition-all duration-300">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 p-[2px] hover:p-[3px] transition-all duration-300">
+                  <div className="w-full h-full bg-black rounded-full flex items-center justify-center group-hover:bg-transparent transition-all duration-300">
                     <svg
                       className="w-5 h-5 text-gray-300 group-hover:text-black transition-colors duration-300"
                       fill="currentColor"
@@ -55,8 +55,8 @@ export const Footer = () => {
                 className="group"
                 aria-label="GitHub"
               >
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 p-[2px] hover:p-[3px] transition-all duration-300">
-                  <div className="w-full h-full bg-black rounded-lg flex items-center justify-center group-hover:bg-transparent transition-all duration-300">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 p-[2px] hover:p-[3px] transition-all duration-300">
+                  <div className="w-full h-full bg-black rounded-full flex items-center justify-center group-hover:bg-transparent transition-all duration-300">
                     <svg
                       className="w-5 h-5 text-gray-300 group-hover:text-black transition-colors duration-300"
                       fill="currentColor"
