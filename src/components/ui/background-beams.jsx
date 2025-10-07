@@ -1,6 +1,6 @@
-/* eslint-disable react/prop-types */
 'use client';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { motion } from 'motion/react';
 import { cn } from '@/lib/utils';
 
@@ -138,3 +138,7 @@ export const BackgroundBeams = React.memo(({ className }) => {
 });
 
 BackgroundBeams.displayName = 'BackgroundBeams';
+
+BackgroundBeams.propTypes = {
+  className: PropTypes.string,
+};

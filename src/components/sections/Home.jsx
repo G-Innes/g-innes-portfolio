@@ -1,5 +1,6 @@
 import { RevealOnScroll } from '../RevealOnScroll';
 import { TechWheel } from '../TechWheel';
+import { BackgroundBeams } from '../ui/background-beams';
 
 export const Home = () => {
   return (
@@ -7,6 +8,8 @@ export const Home = () => {
       id="home"
       className="min-h-screen flex items-center justify-between relative px-8 md:px-16 lg:px-24 overflow-hidden"
     >
+      {/* Background Beams Animation */}
+      <BackgroundBeams />
       {/* Left Side - Content */}
       <RevealOnScroll>
         <div className="z-10 max-w-4xl flex-1">
