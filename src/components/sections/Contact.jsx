@@ -5,6 +5,7 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import { BackgroundGradient } from '../ui/background-gradient';
+import { ToastContainer } from '../ui/toast';
 
 export const Contact = () => {
   const [formData, setFormData] = useState({
@@ -13,26 +14,35 @@ export const Contact = () => {
     message: '',
   });
 
+  const [toasts, setToasts] = useState([]);
+
+  const addToast = (message, type = 'success') => {
+    const id = Date.now().toString();
+    setToasts(prev => [...prev, { id, message, type, duration: 5000 }]);
+  };
+
+  const removeToast = id => {
+    setToasts(prev => prev.filter(toast => toast.id !== id));
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
-    
+
     const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
     const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
 
     if (!serviceId || !templateId) {
-      console.error('EmailJS configuration missing. Please check environment variables.');
-      alert('Email service is not configured properly.');
+      console.error(
+        'EmailJS configuration missing. Please check environment variables.'
+      );
+      addToast('Email service is not configured properly.', 'error');
       return;
     }
 
     emailjs
-      .sendForm(
-        serviceId,
-        templateId,
-        e.target
-      )
+      .sendForm(serviceId, templateId, e.target)
       .then(() => {
-        alert('Message sent successfully');
+        addToast('Message sent successfully! I\'ll get back to you soon.', 'success');
         setFormData({
           name: '',
           email: '',
@@ -41,14 +51,16 @@ export const Contact = () => {
       })
       .catch(error => {
         console.error('Error details:', error);
-        alert('Failed to send message. Please try again later.');
+        addToast('Failed to send message. Please try again later.', 'error');
       });
   };
   return (
-    <section
-      id="contact"
-      className="min-h-screen flex items-center justify-center py-20"
-    >
+    <>
+      <ToastContainer toasts={toasts} removeToast={removeToast} />
+      <section
+        id="contact"
+        className="min-h-screen flex items-center justify-center py-20"
+      >
       <RevealOnScroll>
         <div className="px-4 w-150">
           <h2
@@ -111,6 +123,7 @@ export const Contact = () => {
           </BackgroundGradient>
         </div>
       </RevealOnScroll>
-    </section>
+      </section>
+    </>
   );
 };
