@@ -3,8 +3,8 @@ import logo from '../assets/og-image.svg';
 export const Footer = () => {
   // TODO: Replace with your actual social links
   const socialLinks = {
-    linkedin: 'https://linkedin.com/in/your-profile',
-    github: 'https://github.com/your-username',
+    linkedin: 'https://www.linkedin.com/in/grant-innes-0621781a5/',
+    github: 'https://github.com/G-Innes',
   };
 
   return (
