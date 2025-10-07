@@ -62,10 +62,10 @@ export const Contact = () => {
       <ToastContainer toasts={toasts} removeToast={removeToast} />
       <section
         id="contact"
-        className="min-h-screen flex items-center justify-center py-20"
+        className="min-h-screen flex items-center justify-center py-20 px-4"
       >
         <RevealOnScroll>
-          <div className="px-4 w-150">
+          <div className="w-[360px] sm:w-[600px] lg:w-[800px] mx-auto">
             <h2
               className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 bg-clip-text
         text-transparent text-center"
