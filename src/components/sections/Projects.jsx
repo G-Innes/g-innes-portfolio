@@ -69,6 +69,42 @@ export const Projects = () => {
       githubUrl: null,
     },
     {
+      title: 'HearYou - Personalized Bedtime Stories',
+      description:
+        'Subscription-based application that creates AI-generated personalized bedtime stories with professional voice narration for children. Features interactive onboarding quiz, multiple story templates, and tiered subscription plans. Built with Next.js 15, TypeScript, and integrated with OpenAI GPT-4 and ElevenLabs for story generation and narration.',
+      image: null,
+      tech: [
+        'Next.js 15',
+        'TypeScript',
+        'Tailwind CSS',
+        'PostgreSQL',
+        'Prisma',
+        'OpenAI',
+        'ElevenLabs',
+        'Stripe',
+      ],
+      liveUrl: 'https://www.hearyou.io',
+      githubUrl: 'https://github.com/G-Innes/hearyou-app',
+    },
+    {
+      title: 'AssetTrackr',
+      description:
+        'Cryptocurrency portfolio management application for tracking buy/sell transactions with live price feeds from Coinbase API. Features user authentication, real-time portfolio valuation, transaction history filtering, and comprehensive dashboard. Includes full Docker containerization and CI/CD pipeline with Jest and Playwright testing.',
+      image: null,
+      tech: [
+        'Vue 3',
+        'TypeScript',
+        'Node.js',
+        'Express',
+        'TypeORM',
+        'PostgreSQL',
+        'Docker',
+        'Tailwind CSS',
+      ],
+      liveUrl: 'https://asset-trackr-client.vercel.app',
+      githubUrl: 'https://github.com/G-Innes/AssetTrackr',
+    },
+    {
       title: 'Fleet Fox Task Management',
       description:
         'Production-ready task management application with categories, priorities, and CSV import/export. Features user isolation, due date tracking, and comprehensive filtering. Built with Laravel 12, Vue 3, and Inertia.js with full PEST test coverage.',
@@ -83,22 +119,6 @@ export const Projects = () => {
       ],
       liveUrl: 'https://fleet-flow-gilt.vercel.app/',
       githubUrl: 'https://github.com/G-Innes/FleetFlow',
-    },
-    {
-      title: 'Project 3',
-      description: 'Coming soon...',
-      image: null,
-      tech: ['TypeScript', 'Next.js', 'Docker'],
-      liveUrl: null,
-      githubUrl: null,
-    },
-    {
-      title: 'Project 4',
-      description: 'Coming soon...',
-      image: null,
-      tech: ['Python', 'FastAPI', 'PostgreSQL'],
-      liveUrl: null,
-      githubUrl: null,
     },
   ];
 
