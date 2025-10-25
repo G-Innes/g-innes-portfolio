@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { RevealOnScroll } from '../RevealOnScroll';
 import { BackgroundGradient } from '../ui/background-gradient';
-import FFHero from '../../assets/FF-hero.png';
+import FFHero from '/assets/FF-hero.png';
 
 const ProjectCard = ({
   title,

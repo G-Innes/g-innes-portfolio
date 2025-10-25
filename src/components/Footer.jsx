@@ -1,4 +1,4 @@
-import logo from '../assets/og-image.svg';
+import logo from '/assets/og-image.svg';
 
 export const Footer = () => {
   // TODO: Replace with your actual social links

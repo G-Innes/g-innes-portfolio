@@ -1,165 +1,76 @@
-import { useEffect, useRef, useState } from 'react';
-import ReactIcon from '../assets/dev-icons/react.svg';
-import VueIcon from '../assets/dev-icons/vue.svg';
-import TypeScriptIcon from '../assets/dev-icons/typescript.svg';
-import TailwindIcon from '../assets/dev-icons/tailwind.svg';
-import NextIcon from '../assets/dev-icons/nextjs.svg';
-import NodeIcon from '../assets/dev-icons/nodejs.svg';
-import PostgresIcon from '../assets/dev-icons/postgresql.svg';
-import PhpIcon from '../assets/dev-icons/php.svg';
-import LaravelIcon from '../assets/dev-icons/laravel.svg';
-import PythonIcon from '../assets/dev-icons/python.svg';
+import { useState } from 'react';
+import ReactIcon from '/assets/dev-icons/react.svg';
+import VueIcon from '/assets/dev-icons/vue.svg';
+import TypeScriptIcon from '/assets/dev-icons/typescript.svg';
+import TailwindIcon from '/assets/dev-icons/tailwind.svg';
+import NextIcon from '/assets/dev-icons/nextjs.svg';
+import NodeIcon from '/assets/dev-icons/nodejs.svg';
+import PostgresIcon from '/assets/dev-icons/postgresql.svg';
+import PhpIcon from '/assets/dev-icons/php.svg';
+import LaravelIcon from '/assets/dev-icons/laravel.svg';
+import GitIcon from '/assets/dev-icons/git-new.svg';
 
 const TECH_ICONS = [
-  { icon: ReactIcon, name: 'React' },
-  { icon: VueIcon, name: 'Vue.js' },
-  { icon: TypeScriptIcon, name: 'TypeScript' },
-  { icon: TailwindIcon, name: 'Tailwind CSS' },
-  { icon: NextIcon, name: 'Next.js' },
-  { icon: NodeIcon, name: 'Node.js' },
-  { icon: PostgresIcon, name: 'PostgreSQL' },
-  { icon: PhpIcon, name: 'PHP' },
-  { icon: LaravelIcon, name: 'Laravel' },
-  { icon: PythonIcon, name: 'Python' },
+  { icon: ReactIcon, name: 'React', size: 'large' },
+  { icon: VueIcon, name: 'Vue.js', size: 'medium' },
+  { icon: TypeScriptIcon, name: 'TypeScript', size: 'medium' },
+  { icon: NodeIcon, name: 'Node.js', size: 'medium' },
+  { icon: NextIcon, name: 'Next.js', size: 'small' },
+  { icon: TailwindIcon, name: 'Tailwind CSS', size: 'small' },
+  { icon: PostgresIcon, name: 'PostgreSQL', size: 'medium' },
+  { icon: PhpIcon, name: 'PHP', size: 'small' },
+  { icon: LaravelIcon, name: 'Laravel', size: 'medium' },
+  { icon: GitIcon, name: 'Git', size: 'medium' },
 ];
 
 export const TechWheel = () => {
-  const [isHovered, setIsHovered] = useState(false);
   const [hoveredTech, setHoveredTech] = useState('');
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-  const [isInView, setIsInView] = useState(true);
-  const rootRef = useRef(null);
-  const wheelRef = useRef(null);
-  const borderRef = useRef(null);
-  const rafIdRef = useRef(null);
-  const startTimeRef = useRef(0);
-  const offsetAngleRef = useRef(0); // persist angle across pause/resume
 
-  // Detect prefers-reduced-motion for accessibility and performance
-  useEffect(() => {
-    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const update = () => setPrefersReducedMotion(media.matches);
-    update();
-    media.addEventListener('change', update);
-    return () => media.removeEventListener('change', update);
-  }, []);
-
-  // Pause animations when wheel is offscreen
-  useEffect(() => {
-    if (!rootRef.current) return;
-    const observer = new IntersectionObserver(
-      entries => {
-        const entry = entries[0];
-        setIsInView(entry.isIntersecting);
-      },
-      { threshold: 0.1 }
-    );
-    observer.observe(rootRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  const playState =
-    isHovered || prefersReducedMotion || !isInView ? 'paused' : 'running';
-
-  // requestAnimationFrame-based rotation (replaces CSS keyframes)
-  useEffect(() => {
-    const wheelEl = wheelRef.current;
-    const borderEl = borderRef.current;
-    if (!wheelEl || !borderEl) return;
-
-    const durationMs = 30000; // one full rotation in ms
-
-    const step = ts => {
-      if (!startTimeRef.current) startTimeRef.current = ts;
-      const elapsed = ts - startTimeRef.current;
-      const angle =
-        (offsetAngleRef.current + (elapsed / durationMs) * 360) % 360;
-
-      // Rotate wheel clockwise and border counter-clockwise
-      wheelEl.style.transform = `translateZ(0) rotate(${angle}deg)`;
-      borderEl.style.transform = `translateZ(0) rotate(${-angle}deg)`;
-
-      rafIdRef.current = requestAnimationFrame(step);
-    };
-
-    if (playState === 'running') {
-      startTimeRef.current = 0;
-      rafIdRef.current = requestAnimationFrame(step);
-    } else {
-      // Persist current angle and stop
-      if (rafIdRef.current) {
-        cancelAnimationFrame(rafIdRef.current);
-        rafIdRef.current = null;
-      }
-      // Ensure elements reflect the persisted angle
-      const persistedAngle = offsetAngleRef.current % 360;
-      wheelEl.style.transform = `translateZ(0) rotate(${persistedAngle}deg)`;
-      borderEl.style.transform = `translateZ(0) rotate(${-persistedAngle}deg)`;
+  const getSizeClasses = size => {
+    switch (size) {
+      case 'small':
+        return 'w-10 h-10';
+      case 'medium':
+        return 'w-14 h-14';
+      case 'large':
+        return 'w-18 h-18';
+      default:
+        return 'w-14 h-14';
     }
-
-    return () => {
-      if (rafIdRef.current) {
-        // compute and store offset at cleanup
-        const now = performance.now();
-        const elapsed = now - (startTimeRef.current || now);
-        offsetAngleRef.current =
-          (offsetAngleRef.current + (elapsed / durationMs) * 360) % 360;
-        cancelAnimationFrame(rafIdRef.current);
-        rafIdRef.current = null;
-      }
-    };
-  }, [playState]);
-
-  const radius = 180;
+  };
 
   return (
-    <div ref={rootRef} className="relative w-96 h-96 mx-auto">
-      {/* Counter-rotating border */}
-      <div
-        ref={borderRef}
-        className={`absolute inset-0 rounded-full border-2 border-blue-500/30 will-change-transform`}
-        style={{
-          transformOrigin: 'center',
-          transform: 'translateZ(0)',
-        }}
-      ></div>
-
-      {/* Spinning wheel container */}
-      <div
-        className="relative w-full h-full will-change-transform"
-        style={{
-          transformOrigin: 'center',
-        }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => {
-          setIsHovered(false);
-          setHoveredTech('');
-        }}
-      >
-        {/* Center circle (kept static, not rotating) */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 rounded-full flex items-center justify-center z-20 shadow-lg pointer-events-none">
-          <span className="text-black text-base font-bold text-center px-1">
-            {hoveredTech || 'Tech'}
-          </span>
-        </div>
-
-        <div
-          ref={wheelRef}
-          className={`w-full h-full will-change-transform`}
-          style={{ transformOrigin: 'center', transform: 'translateZ(0)' }}
-        >
-          {/* Tech icons positioned around the circle */}
+    <div className="relative w-96 h-96 mx-auto">
+      {/* Tech tag cloud grid */}
+      <div className="relative w-full h-full">
+        {/* Tech icons in scattered grid layout */}
+        <div className="absolute inset-0 grid grid-cols-5 grid-rows-5 gap-12 p-16">
           {TECH_ICONS.map((tech, index) => {
-            const angle = (index * 360) / TECH_ICONS.length;
+            // More random scattered positioning
+            const positions = [
+              { row: 1, col: 1 }, // React (index 0)
+              { row: 1, col: 4 }, // Vue.js (index 1)
+              { row: 2, col: 3 }, // TypeScript (index 2)
+              { row: 2, col: 5 }, // Node.js (index 3)
+              { row: 3, col: 1 }, // Next.js (index 4)
+              { row: 3, col: 4 }, // Tailwind CSS (index 5)
+              { row: 4, col: 2 }, // PostgreSQL (index 6)
+              { row: 4, col: 4 }, // PHP (index 7)
+              { row: 5, col: 1 }, // Laravel (index 8)
+              { row: 5, col: 5 }, // Git (index 9)
+            ];
+
+            const position = positions[index] || { row: 3, col: 3 };
 
             return (
               <div
                 key={tech.name}
-                className="absolute w-14 h-14 cursor-pointer group"
+                className={`${getSizeClasses(
+                  tech.size
+                )} cursor-pointer group relative`}
                 style={{
-                  left: '50%',
-                  top: '50%',
-                  transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-${radius}px) rotate(${-angle}deg)`,
+                  gridRow: position.row,
+                  gridColumn: position.col,
                   zIndex: 10,
                 }}
                 onMouseEnter={() => setHoveredTech(tech.name)}
@@ -168,11 +79,18 @@ export const TechWheel = () => {
                 <img
                   src={tech.icon}
                   alt={tech.name}
-                  className="w-full h-full object-contain transition-all duration-300 group-hover:scale-110"
+                  className="w-full h-full object-contain transition-all duration-300 group-hover:scale-125 group-hover:brightness-125 group-hover:drop-shadow-[0_0_20px_rgba(59,130,246,0.6)] group-hover:-translate-y-1"
                 />
               </div>
             );
           })}
+        </div>
+
+        {/* Tech Stack label below the grid */}
+        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-40 h-12 bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 rounded-2xl flex items-center justify-center z-20 shadow-lg">
+          <span className="text-black text-sm font-bold text-center px-2">
+            {hoveredTech || 'Tech Stack'}
+          </span>
         </div>
       </div>
     </div>

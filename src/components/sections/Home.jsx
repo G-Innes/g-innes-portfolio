@@ -7,10 +7,11 @@ export const Home = () => {
     <section
       id="home"
       className="min-h-screen flex flex-col lg:flex-row items-center justify-between relative px-8 md:px-16 lg:px-24 overflow-hidden py-12 lg:py-0"
+      style={{ position: 'relative' }}
     >
       {/* Background Beams Animation */}
       <BackgroundBeams />
-      
+
       {/* Tech Wheel - Mobile: Top Center, Desktop: Right Side */}
       <div className="flex items-center justify-center lg:order-2 z-10 lg:flex-1 mb-8 lg:mb-0 scale-75 lg:scale-100">
         <RevealOnScroll>
@@ -35,7 +36,7 @@ export const Home = () => {
               href="#projects"
               className="bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 text-white py-3 px-8 rounded-[20px] font-medium transition relative overflow-hidden hover:-translate-y-0.5 hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] inline-flex items-center justify-center"
             >
-              Take A Tour <span className="ml-2">&gt;</span>
+              Projects <span className="ml-2">&gt;</span>
             </a>
 
             <a

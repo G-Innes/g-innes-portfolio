@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
-import logo from '../assets/og-image.svg';
+import logo from '/assets/og-image.svg';
 import {
   Navbar as ResizableNavbar,
   NavBody,
