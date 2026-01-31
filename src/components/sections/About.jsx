@@ -39,19 +39,6 @@ const cardVariants = {
   },
 };
 
-const skillTagVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      type: 'spring',
-      stiffness: 300,
-      damping: 20,
-    },
-  },
-};
-
 const testimonialVariants = {
   enter: (direction) => ({
     x: direction > 0 ? 30 : -30,
@@ -185,48 +172,33 @@ export const About = () => {
 
               {/* Bottom Half - Compact content */}
               <div className="p-4 sm:p-6 flex-1 flex flex-col">
-                <motion.p
-                  className="text-gray-300 mb-3 text-sm leading-relaxed"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                  viewport={{ once: true }}
-                >
+                <p className="text-gray-300 mb-3 text-sm leading-relaxed">
                   As a fullstack developer, I specialize in building robust and
                   elegant digital experiences from the ground up. I believe that
                   great software starts with clean architecture, thoughtful
                   interfaces, and a deep respect for the people using it. From
                   backend logic to frontend polish, I bring clarity,
                   performance, and purpose to every line of code.
-                </motion.p>
+                </p>
 
                 <div className="grid grid-cols-1 gap-2 flex-1">
-                  {skillGroups.map(({ title, skills }, groupIdx) => (
-                    <motion.div
+                  {skillGroups.map(({ title, skills }) => (
+                    <div
                       key={title}
                       className="rounded-xl p-2.5 bg-zinc-900/50 hover:-translate-y-1 transition-all"
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.4 + groupIdx * 0.1 }}
-                      viewport={{ once: true }}
                     >
                       <h3 className="text-lg font-bold mb-1.5">{title}</h3>
                       <div className="flex flex-wrap gap-1.5">
                         {skills.map((tech, idx) => (
-                          <motion.span
+                          <span
                             key={`${title}-${idx}`}
                             className="bg-blue-500/10 text-blue-500 py-1 px-2 rounded-full text-xs hover:bg-blue-500/20 hover:shadow-[0_2px_8px_rgba(59,130,246,0.2)] transition"
-                            variants={skillTagVariants}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.5 + groupIdx * 0.1 + idx * 0.05 }}
                           >
                             {tech}
-                          </motion.span>
+                          </span>
                         ))}
                       </div>
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
               </div>

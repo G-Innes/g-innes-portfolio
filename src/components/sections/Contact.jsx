@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import emailjs from 'emailjs-com';
 import { Input } from '../ui/input';
@@ -6,6 +6,10 @@ import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import { BackgroundGradient } from '../ui/background-gradient';
 import { ToastContainer } from '../ui/toast';
+
+// Rate limiting constants
+const RATE_LIMIT_KEY = 'contact_form_last_submit';
+const RATE_LIMIT_COOLDOWN = 60000; // 1 minute cooldown between submissions
 
 // Animation variants
 const sectionVariants = {
@@ -80,6 +84,38 @@ const LoadingSpinner = () => (
   </svg>
 );
 
+// Check if rate limited
+const isRateLimited = () => {
+  try {
+    const lastSubmit = localStorage.getItem(RATE_LIMIT_KEY);
+    if (!lastSubmit) return false;
+    return Date.now() - parseInt(lastSubmit, 10) < RATE_LIMIT_COOLDOWN;
+  } catch {
+    return false;
+  }
+};
+
+// Get remaining cooldown time in seconds
+const getRemainingCooldown = () => {
+  try {
+    const lastSubmit = localStorage.getItem(RATE_LIMIT_KEY);
+    if (!lastSubmit) return 0;
+    const remaining = RATE_LIMIT_COOLDOWN - (Date.now() - parseInt(lastSubmit, 10));
+    return Math.max(0, Math.ceil(remaining / 1000));
+  } catch {
+    return 0;
+  }
+};
+
+// Set rate limit timestamp
+const setRateLimitTimestamp = () => {
+  try {
+    localStorage.setItem(RATE_LIMIT_KEY, Date.now().toString());
+  } catch {
+    // localStorage not available
+  }
+};
+
 export const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -87,8 +123,24 @@ export const Contact = () => {
     message: '',
   });
 
+  // Honeypot field for bot detection
+  const [honeypot, setHoneypot] = useState('');
+
   const [toasts, setToasts] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [cooldownRemaining, setCooldownRemaining] = useState(0);
+
+  // Check rate limit on mount and update cooldown timer
+  useEffect(() => {
+    const updateCooldown = () => {
+      const remaining = getRemainingCooldown();
+      setCooldownRemaining(remaining);
+    };
+
+    updateCooldown();
+    const interval = setInterval(updateCooldown, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const addToast = (message, type = 'success') => {
     const id = Date.now().toString();
@@ -101,6 +153,35 @@ export const Contact = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
+
+    // Honeypot check - if filled, it's likely a bot
+    if (honeypot) {
+      // Silently "succeed" to not tip off the bot
+      addToast("Message sent successfully! I'll get back to you soon.", 'success');
+      setFormData({ name: '', email: '', message: '' });
+      return;
+    }
+
+    // Rate limit check
+    if (isRateLimited()) {
+      addToast(
+        `Please wait ${cooldownRemaining} seconds before sending another message.`,
+        'error'
+      );
+      return;
+    }
+
+    // Basic validation
+    if (formData.name.trim().length < 2) {
+      addToast('Please enter a valid name.', 'error');
+      return;
+    }
+
+    if (formData.message.trim().length < 10) {
+      addToast('Please enter a message with at least 10 characters.', 'error');
+      return;
+    }
+
     setIsSubmitting(true);
 
     const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
@@ -117,6 +198,11 @@ export const Contact = () => {
 
     try {
       await emailjs.sendForm(serviceId, templateId, e.target);
+
+      // Set rate limit timestamp on successful submission
+      setRateLimitTimestamp();
+      setCooldownRemaining(RATE_LIMIT_COOLDOWN / 1000);
+
       addToast(
         "Message sent successfully! I'll get back to you soon.",
         'success'
@@ -133,6 +219,8 @@ export const Contact = () => {
       setIsSubmitting(false);
     }
   };
+
+  const isDisabled = isSubmitting || cooldownRemaining > 0;
 
   return (
     <>
@@ -157,6 +245,18 @@ export const Contact = () => {
           <motion.div variants={formVariants}>
             <BackgroundGradient className="p-8 rounded-[22px] bg-zinc-900">
               <form className="space-y-6" onSubmit={handleSubmit}>
+                {/* Honeypot field - hidden from users, visible to bots */}
+                <input
+                  type="text"
+                  name="website"
+                  value={honeypot}
+                  onChange={e => setHoneypot(e.target.value)}
+                  className="absolute -left-[9999px] opacity-0 pointer-events-none"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                />
+
                 <motion.div
                   className="space-y-2"
                   variants={fieldVariants}
@@ -168,11 +268,13 @@ export const Contact = () => {
                     id="name"
                     name="name"
                     required
+                    minLength={2}
+                    maxLength={100}
                     value={formData.name}
                     onChange={e =>
                       setFormData({ ...formData, name: e.target.value })
                     }
-                    disabled={isSubmitting}
+                    disabled={isDisabled}
                   />
                 </motion.div>
                 <motion.div
@@ -186,11 +288,12 @@ export const Contact = () => {
                     id="email"
                     name="email"
                     required
+                    maxLength={254}
                     value={formData.email}
                     onChange={e =>
                       setFormData({ ...formData, email: e.target.value })
                     }
-                    disabled={isSubmitting}
+                    disabled={isDisabled}
                   />
                 </motion.div>
                 <motion.div
@@ -203,21 +306,23 @@ export const Contact = () => {
                     id="message"
                     name="message"
                     required
+                    minLength={10}
+                    maxLength={2000}
                     value={formData.message}
                     rows={5}
                     onChange={e =>
                       setFormData({ ...formData, message: e.target.value })
                     }
-                    disabled={isSubmitting}
+                    disabled={isDisabled}
                   />
                 </motion.div>
                 <motion.div variants={fieldVariants}>
                   <motion.button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={isDisabled}
                     className="w-full bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 text-white font-medium py-3 px-6 rounded-[20px] transition relative overflow-hidden hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                    whileHover={isSubmitting ? {} : { scale: 1.01, y: -2 }}
-                    whileTap={isSubmitting ? {} : { scale: 0.99 }}
+                    whileHover={isDisabled ? {} : { scale: 1.01, y: -2 }}
+                    whileTap={isDisabled ? {} : { scale: 0.99 }}
                   >
                     <AnimatePresence mode="wait">
                       {isSubmitting ? (
@@ -230,6 +335,15 @@ export const Contact = () => {
                         >
                           <LoadingSpinner />
                           Sending...
+                        </motion.span>
+                      ) : cooldownRemaining > 0 ? (
+                        <motion.span
+                          key="cooldown"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                        >
+                          Wait {cooldownRemaining}s
                         </motion.span>
                       ) : (
                         <motion.span

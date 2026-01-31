@@ -61,16 +61,12 @@ const ProjectCard = ({
         </p>
         <div className="flex flex-wrap gap-2 mb-4">
           {tech.map((item, idx) => (
-            <motion.span
+            <span
               key={idx}
               className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-xs hover:bg-blue-500/20 hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition-all"
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ delay: idx * 0.03, duration: 0.3 }}
-              viewport={{ once: true }}
             >
               {item}
-            </motion.span>
+            </span>
           ))}
         </div>
         <div className="flex gap-4 items-center">
