@@ -1,5 +1,4 @@
-/* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import logo from '/assets/og-image.svg';
 import {
   Navbar as ResizableNavbar,
@@ -11,15 +10,41 @@ import {
   MobileNavToggle,
 } from './ui/resizable-navbar';
 
+const navItems = [
+  { name: 'Home', link: '#home' },
+  { name: 'About', link: '#about' },
+  { name: 'Projects', link: '#projects' },
+  { name: 'Contact', link: '#contact' },
+];
+
+// Link of whichever section currently crosses the middle of the viewport
+const useActiveLink = () => {
+  const [activeLink, setActiveLink] = useState(navItems[0].link);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) setActiveLink(`#${entry.target.id}`);
+        });
+      },
+      { rootMargin: '-50% 0px -50% 0px' }
+    );
+
+    navItems.forEach(({ link }) => {
+      const section = document.querySelector(link);
+      if (section) observer.observe(section);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  return activeLink;
+};
+
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const navItems = [
-    { name: 'Home', link: '#home' },
-    { name: 'About', link: '#about' },
-    { name: 'Projects', link: '#projects' },
-    { name: 'Contact', link: '#contact' },
-  ];
+  const activeLink = useActiveLink();
 
   return (
     <ResizableNavbar>
@@ -29,15 +54,13 @@ export const Navbar = () => {
           href="#home"
           className="relative z-20 flex items-center space-x-2 text-xl font-bold text-white"
         >
-          <img src={logo} alt="Logo" className="w-8 h-8" />
-          <span className="font-sans">
+          <img src={logo} alt="" width="32" height="32" className="w-8 h-8" />
+          <span className="font-display">
             Grant
-            <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 bg-clip-text text-transparent">
-              .dev
-            </span>
+            <span className="text-cyan-400">.dev</span>
           </span>
         </a>
-        <NavItems items={navItems} />
+        <NavItems items={navItems} activeLink={activeLink} />
       </NavBody>
 
       {/* Mobile Navbar */}
@@ -47,12 +70,10 @@ export const Navbar = () => {
             href="#home"
             className="relative z-20 flex items-center space-x-2 text-xl font-bold text-white"
           >
-            <img src={logo} alt="Logo" className="w-8 h-8" />
-            <span className="font-sans">
+            <img src={logo} alt="" width="32" height="32" className="w-8 h-8" />
+            <span className="font-display">
               Grant
-              <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 bg-clip-text text-transparent">
-                .dev
-              </span>
+              <span className="text-cyan-400">.dev</span>
             </span>
           </a>
           <MobileNavToggle isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
@@ -65,7 +86,11 @@ export const Navbar = () => {
               onClick={() => setIsOpen(false)}
               className="text-lg font-semibold w-full"
             >
-              <span className="text-gray-300 hover:text-transparent hover:bg-gradient-to-r hover:from-blue-500 hover:via-cyan-400 hover:to-green-500 hover:bg-clip-text transition-all duration-300 inline-block">
+              <span
+                className={`inline-block transition-colors duration-300 hover:text-white ${
+                  activeLink === item.link ? 'text-white' : 'text-gray-400'
+                }`}
+              >
                 {item.name}
               </span>
             </a>

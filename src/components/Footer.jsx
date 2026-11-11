@@ -1,24 +1,21 @@
 import logo from '/assets/og-image.svg';
 
 export const Footer = () => {
-  // TODO: Replace with your actual social links
   const socialLinks = {
     linkedin: 'https://www.linkedin.com/in/grant-innes-0621781a5/',
     github: 'https://github.com/G-Innes',
   };
 
   return (
-    <footer className="w-full border-t border-white/10 bg-black py-8">
-      <div className="max-w-5xl mx-auto px-4">
+    <footer className="w-full border-t border-white/10 bg-ink py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo Section */}
           <div className="flex items-center space-x-2">
-            <img src={logo} alt="Logo" className="w-8 h-8" />
-            <span className="text-xl font-bold font-sans">
+            <img src={logo} alt="" width="32" height="32" className="w-8 h-8" />
+            <span className="text-xl font-bold font-display">
               Grant
-              <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 bg-clip-text text-transparent">
-                .dev
-              </span>
+              <span className="text-cyan-400">.dev</span>
             </span>
           </div>
 
@@ -33,10 +30,10 @@ export const Footer = () => {
                 className="group"
                 aria-label="LinkedIn"
               >
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 p-[2px] hover:p-[3px] transition-all duration-300">
-                  <div className="w-full h-full bg-black rounded-full flex items-center justify-center group-hover:bg-transparent transition-all duration-300">
+                <div className="w-10 h-10 rounded-full border border-white/15 transition-colors duration-300 group-hover:border-cyan-400/60">
+                  <div className="w-full h-full rounded-full flex items-center justify-center">
                     <svg
-                      className="w-5 h-5 text-gray-300 group-hover:text-black transition-colors duration-300"
+                      className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-300"
                       fill="currentColor"
                       viewBox="0 0 24 24"
                       xmlns="http://www.w3.org/2000/svg"
@@ -55,10 +52,10 @@ export const Footer = () => {
                 className="group"
                 aria-label="GitHub"
               >
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 p-[2px] hover:p-[3px] transition-all duration-300">
-                  <div className="w-full h-full bg-black rounded-full flex items-center justify-center group-hover:bg-transparent transition-all duration-300">
+                <div className="w-10 h-10 rounded-full border border-white/15 transition-colors duration-300 group-hover:border-cyan-400/60">
+                  <div className="w-full h-full rounded-full flex items-center justify-center">
                     <svg
-                      className="w-5 h-5 text-gray-300 group-hover:text-black transition-colors duration-300"
+                      className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-300"
                       fill="currentColor"
                       viewBox="0 0 24 24"
                       xmlns="http://www.w3.org/2000/svg"
@@ -71,7 +68,7 @@ export const Footer = () => {
             </div>
 
             {/* Let's Connect Text */}
-            <p className="text-gray-400 text-sm font-light">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500">
               Let&apos;s connect
             </p>
           </div>

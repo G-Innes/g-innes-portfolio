@@ -1,17 +1,20 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle2, XCircle, X } from 'lucide-react';
 
 export const Toast = ({ message, type = 'success', onClose, duration = 5000 }) => {
+  // Keep the latest onClose in a ref so parent re-renders don't restart the timer
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  });
+
   useEffect(() => {
     if (duration > 0) {
-      const timer = setTimeout(() => {
-        onClose();
-      }, duration);
+      const timer = setTimeout(() => onCloseRef.current(), duration);
       return () => clearTimeout(timer);
     }
-  }, [duration, onClose]);
+  }, [duration]);
 
   const icons = {
     success: <CheckCircle2 className="w-5 h-5 text-green-400" />,
@@ -24,7 +27,9 @@ export const Toast = ({ message, type = 'success', onClose, duration = 5000 }) =
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -20, scale: 0.95 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
-      className="fixed top-4 right-4 z-[9999] max-w-md"
+      layout
+      role="status"
+      className="pointer-events-auto w-full"
     >
       <div className="relative p-[2px] rounded-2xl bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500">
         <div className="relative bg-zinc-900/90 backdrop-blur-xl rounded-2xl p-4 shadow-2xl">
@@ -45,43 +50,20 @@ export const Toast = ({ message, type = 'success', onClose, duration = 5000 }) =
   );
 };
 
-Toast.propTypes = {
-  message: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(['success', 'error']),
-  onClose: PropTypes.func.isRequired,
-  duration: PropTypes.number,
-};
-
 export const ToastContainer = ({ toasts, removeToast }) => {
   return (
-    <AnimatePresence mode="popLayout">
-      {toasts.map((toast, index) => (
-        <motion.div
-          key={toast.id}
-          style={{ top: `${index * 80 + 16}px` }}
-          className="fixed right-4 z-[9999]"
-        >
+    <div className="pointer-events-none fixed top-4 right-4 left-4 z-[9999] flex flex-col items-end gap-3 sm:left-auto sm:w-full sm:max-w-md">
+      <AnimatePresence>
+        {toasts.map(toast => (
           <Toast
+            key={toast.id}
             message={toast.message}
             type={toast.type}
             onClose={() => removeToast(toast.id)}
             duration={toast.duration}
           />
-        </motion.div>
-      ))}
-    </AnimatePresence>
+        ))}
+      </AnimatePresence>
+    </div>
   );
 };
-
-ToastContainer.propTypes = {
-  toasts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      message: PropTypes.string.isRequired,
-      type: PropTypes.oneOf(['success', 'error']),
-      duration: PropTypes.number,
-    })
-  ).isRequired,
-  removeToast: PropTypes.func.isRequired,
-};
-
