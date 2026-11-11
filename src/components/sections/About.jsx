@@ -54,7 +54,7 @@ export const About = () => {
         'Building a mobile-first product from the ground up: a React Native and Expo app on a Laravel and PostgreSQL backend, in a single monorepo.',
     },
     {
-      role: 'Full-Stack Engineer',
+      role: 'Full-Stack Developer',
       company: 'FleetFox',
       period: 'Oct 2025 – Present',
       summary:
