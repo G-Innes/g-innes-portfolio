@@ -47,28 +47,28 @@ export const About = () => {
 
   const workExperience = [
     {
-      role: 'Full-Stack Engineer',
+      role: 'Founding Engineer',
       company: 'THE4',
-      period: 'Present',
+      period: 'Jun 2026 – Present',
       summary:
         'Building a mobile-first product from the ground up: a React Native and Expo app on a Laravel and PostgreSQL backend, in a single monorepo.',
     },
     {
-      role: 'Full-Stack Developer',
+      role: 'Full-Stack Engineer',
       company: 'FleetFox',
       period: 'Oct 2025 – Present',
       summary:
         'Building web applications that streamline day-to-day operations in the fleet-management industry, from architecture through to continuous delivery.',
     },
     {
-      role: 'Full-Stack Developer',
+      role: 'Full-Stack Engineer',
       company: 'Freelance',
       period: 'Oct 2023 – Present',
       summary:
         'Designing, building and running complete products for clients: APIs, interfaces, data models, deployments and releases, including revenue-generating systems in production.',
     },
     {
-      role: 'Full-Stack Developer',
+      role: 'Full-Stack Engineer',
       company: 'Glafos',
       period: 'Aug 2024 – Oct 2025',
       summary:
