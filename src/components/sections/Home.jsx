@@ -57,19 +57,21 @@ export const Home = () => {
           className="mb-8 max-w-5xl text-left text-5xl leading-[1.02] tracking-[-0.04em] text-white sm:text-6xl md:text-7xl lg:text-8xl"
           variants={itemVariants}
         >
-          Developing Apps That{' '}
+          {/* Headline alternatives (plain part / gradient part):
+              "I turn ideas into" / "working software"
+              "From rough idea" / "to production" */}
+          Your idea,{' '}
           <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 bg-clip-text text-transparent sm:whitespace-nowrap">
-            Shape Tomorrow
+            built and shipped
           </span>
         </motion.h1>
         <motion.p
           className="mb-10 max-w-2xl text-left text-base leading-relaxed text-gray-400 md:text-lg"
           variants={itemVariants}
         >
-          I&apos;m a fullstack developer crafting clean, performant web
-          experiences from the ground up. Whether it&apos;s backend logic or
-          frontend polish, I focus on building software that&apos;s intuitive,
-          reliable, and built to last.
+          I&apos;m a full-stack developer who takes products from first sketch
+          to production, on web and mobile. Interface, API, database and
+          deployment: one person who can own all of it.
         </motion.p>
         <motion.div
           className="flex flex-col gap-4 sm:flex-row"
