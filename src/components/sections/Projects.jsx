@@ -1,32 +1,9 @@
-/* eslint-disable react/prop-types */
 import { motion } from 'motion/react';
-import { BackgroundGradient } from '../ui/background-gradient';
-import FFHero from '/assets/FF-hero.png';
+import { SpotlightCard } from '../ui/spotlight-card';
+import { Section } from '../ui/section';
+import FFHero from '/assets/FF-hero.webp';
 
 // Animation variants
-const sectionVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.1,
-    },
-  },
-};
-
-const headerVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.25, 0.46, 0.45, 0.94],
-    },
-  },
-};
-
 const cardVariants = {
   hidden: { opacity: 0, y: 40 },
   visible: {
@@ -39,62 +16,98 @@ const cardVariants = {
   },
 };
 
-const ProjectCard = ({
-  title,
-  description,
-  image,
-  tech,
-  liveUrl,
-  githubUrl,
-}) => (
-  <motion.div variants={cardVariants}>
-    <BackgroundGradient className="rounded-[22px] bg-zinc-900 overflow-hidden h-full">
-      {image && (
-        <div className="w-full h-48 overflow-hidden rounded-t-[20px]">
-          <img src={image} alt={title} className="w-full h-full object-cover" />
-        </div>
-      )}
-      <div className="p-4 sm:p-6">
-        <h3 className="text-xl font-bold mb-2">{title}</h3>
-        <p className="text-gray-400 mb-4 text-sm leading-relaxed">
-          {description}
-        </p>
-        <div className="flex flex-wrap gap-2 mb-4">
-          {tech.map((item, idx) => (
-            <span
-              key={idx}
-              className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-xs hover:bg-blue-500/20 hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition-all"
-            >
-              {item}
-            </span>
-          ))}
-        </div>
-        <div className="flex gap-4 items-center">
-          {liveUrl && (
-            <motion.a
-              href={liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-400 hover:text-transparent hover:bg-gradient-to-r hover:from-blue-500 hover:via-cyan-400 hover:to-green-500 hover:bg-clip-text transition-all duration-300 text-sm font-medium"
-              whileHover={{ x: 3 }}
-            >
-              Live Demo →
-            </motion.a>
-          )}
-          {githubUrl && (
-            <motion.a
-              href={githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-transparent hover:bg-gradient-to-r hover:from-blue-500 hover:via-cyan-400 hover:to-green-500 hover:bg-clip-text transition-all duration-300 text-sm font-medium"
-              whileHover={{ x: 3 }}
-            >
-              GitHub →
-            </motion.a>
-          )}
-        </div>
+const ProjectTags = ({ tech }) => (
+  <div className="flex flex-wrap gap-2">
+    {tech.map((item, idx) => (
+      <span
+        key={idx}
+        className="rounded-full border border-white/10 px-3 py-1 font-mono text-xs text-gray-300"
+      >
+        {item}
+      </span>
+    ))}
+  </div>
+);
+
+const ProjectLinks = ({ liveUrl, githubUrl }) => (
+  <div className="flex items-center gap-6">
+    {liveUrl && (
+      <motion.a
+        href={liveUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-sm font-semibold text-cyan-300 transition-colors duration-200 hover:text-white"
+        whileHover={{ x: 3 }}
+      >
+        Live Demo →
+      </motion.a>
+    )}
+    {githubUrl && (
+      <motion.a
+        href={githubUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-sm font-medium text-gray-400 transition-colors duration-200 hover:text-white"
+        whileHover={{ x: 3 }}
+      >
+        GitHub →
+      </motion.a>
+    )}
+  </div>
+);
+
+// The lead project: full width, screenshot beside the write-up
+const FeaturedProject = ({ title, description, image, tech, liveUrl, githubUrl }) => (
+  <motion.div variants={cardVariants} className="md:col-span-2">
+    <SpotlightCard featured className="grid overflow-hidden lg:grid-cols-[1.15fr_1fr]">
+      <div className="overflow-hidden border-b border-white/10 lg:border-r lg:border-b-0">
+        <img
+          src={image}
+          alt={title}
+          width="1200"
+          height="468"
+          loading="lazy"
+          decoding="async"
+          className="h-56 w-full object-cover object-left-top transition-[scale] duration-700 ease-out group-hover:scale-[1.03] sm:h-72 lg:h-full"
+        />
       </div>
-    </BackgroundGradient>
+      <div className="flex flex-col justify-center gap-5 p-6 sm:p-9">
+        <h3 className="text-2xl text-white md:text-3xl">{title}</h3>
+        <p className="leading-relaxed text-gray-400">{description}</p>
+        <ProjectTags tech={tech} />
+        <ProjectLinks liveUrl={liveUrl} githubUrl={githubUrl} />
+      </div>
+    </SpotlightCard>
+  </motion.div>
+);
+
+const ProjectCard = ({ title, description, tech, liveUrl, githubUrl }) => (
+  <motion.div variants={cardVariants} className="h-full">
+    <SpotlightCard
+      containerClassName="h-full"
+      className="flex h-full flex-col gap-5 p-6 sm:p-8"
+    >
+      <h3 className="text-xl text-white md:text-2xl">{title}</h3>
+      <p className="flex-1 text-sm leading-relaxed text-gray-400 sm:text-base">
+        {description}
+      </p>
+      <ProjectTags tech={tech} />
+      <ProjectLinks liveUrl={liveUrl} githubUrl={githubUrl} />
+    </SpotlightCard>
+  </motion.div>
+);
+
+// A project with nothing to link to yet: shown small and last
+const UpcomingProject = ({ title, description, tech }) => (
+  <motion.div
+    variants={cardVariants}
+    className="flex flex-col gap-4 rounded-3xl border border-dashed border-white/15 p-6 sm:flex-row sm:items-center sm:justify-between md:col-span-2"
+  >
+    <div>
+      <h3 className="text-lg text-gray-300">{title}</h3>
+      <p className="mt-1 text-sm text-gray-500">{description}</p>
+    </div>
+    <ProjectTags tech={tech} />
   </motion.div>
 );
 
@@ -162,30 +175,26 @@ export const Projects = () => {
     },
   ];
 
+  // Layout follows the data: the first project with a screenshot leads, and
+  // anything without links yet drops to the end
+  const isUpcoming = project => !project.liveUrl && !project.githubUrl;
+  const featured = projects.find(project => project.image && !isUpcoming(project));
+  const upcoming = projects.filter(isUpcoming);
+  const rest = projects.filter(
+    project => project !== featured && !isUpcoming(project)
+  );
+
   return (
-    <section
-      id="projects"
-      className="min-h-screen flex items-center justify-center py-20 px-4"
-    >
-      <motion.div
-        className="w-full max-w-5xl mx-auto"
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-100px' }}
-      >
-        <motion.h2
-          className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 bg-clip-text text-transparent text-center"
-          variants={headerVariants}
-        >
-          Featured Projects
-        </motion.h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {projects.map((project, idx) => (
-            <ProjectCard key={idx} {...project} />
-          ))}
-        </div>
-      </motion.div>
-    </section>
+    <Section id="projects" index="02" label="Projects" title="Featured Projects">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {featured && <FeaturedProject {...featured} />}
+        {rest.map(project => (
+          <ProjectCard key={project.title} {...project} />
+        ))}
+        {upcoming.map(project => (
+          <UpcomingProject key={project.title} {...project} />
+        ))}
+      </div>
+    </Section>
   );
 };

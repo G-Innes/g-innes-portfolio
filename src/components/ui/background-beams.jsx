@@ -1,34 +1,32 @@
 'use client';
-import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { motion } from 'motion/react';
+import React, { useRef } from 'react';
+import { motion, useInView, useReducedMotion } from 'motion/react';
 import { cn } from '@/lib/utils';
 
+// Every other line of the static grid gets a travelling highlight
+const BEAM_PATHS = [
+  'M-380 -189C-380 -189 -312 216 152 343C616 470 684 875 684 875',
+  'M-324 -253C-324 -253 -256 152 208 279C672 406 740 811 740 811',
+  'M-268 -317C-268 -317 -200 88 264 215C728 342 796 747 796 747',
+  'M-212 -381C-212 -381 -144 24 320 151C784 278 852 683 852 683',
+  'M-156 -445C-156 -445 -88 -40 376 87C840 214 908 619 908 619',
+  'M-100 -509C-100 -509 -32 -104 432 23C896 150 964 555 964 555',
+  'M-44 -573C-44 -573 24 -168 488 -41C952 86 1020 491 1020 491',
+  'M12 -637C12 -637 80 -232 544 -105C1008 22 1076 427 1076 427',
+];
+
 export const BackgroundBeams = React.memo(({ className }) => {
-  // Reduced to 15 paths for better performance while keeping the effect
-  const paths = useMemo(
-    () => [
-      'M-380 -189C-380 -189 -312 216 152 343C616 470 684 875 684 875',
-      'M-352 -221C-352 -221 -284 184 180 311C644 438 712 843 712 843',
-      'M-324 -253C-324 -253 -256 152 208 279C672 406 740 811 740 811',
-      'M-296 -285C-296 -285 -228 120 236 247C700 374 768 779 768 779',
-      'M-268 -317C-268 -317 -200 88 264 215C728 342 796 747 796 747',
-      'M-240 -349C-240 -349 -172 56 292 183C756 310 824 715 824 715',
-      'M-212 -381C-212 -381 -144 24 320 151C784 278 852 683 852 683',
-      'M-184 -413C-184 -413 -116 -8 348 119C812 246 880 651 880 651',
-      'M-156 -445C-156 -445 -88 -40 376 87C840 214 908 619 908 619',
-      'M-128 -477C-128 -477 -60 -72 404 55C868 182 936 587 936 587',
-      'M-100 -509C-100 -509 -32 -104 432 23C896 150 964 555 964 555',
-      'M-72 -541C-72 -541 -4 -136 460 -9C924 118 992 523 992 523',
-      'M-44 -573C-44 -573 24 -168 488 -41C952 86 1020 491 1020 491',
-      'M-16 -605C-16 -605 52 -200 516 -73C980 54 1048 459 1048 459',
-      'M12 -637C12 -637 80 -232 544 -105C1008 22 1076 427 1076 427',
-    ],
-    []
-  );
+  const ref = useRef(null);
+  // Animating SVG gradients repaints the whole hero, so only run the beams
+  // while the hero is on screen and the visitor hasn't asked for less motion
+  const inView = useInView(ref);
+  const reduceMotion = useReducedMotion();
+  const animated = inView && !reduceMotion;
 
   return (
     <div
+      ref={ref}
+      aria-hidden="true"
       className={cn(
         'absolute inset-0 flex h-full w-full items-center justify-center [mask-repeat:no-repeat] [mask-size:40px]',
         className
@@ -51,47 +49,49 @@ export const BackgroundBeams = React.memo(({ className }) => {
         />
 
         {/* Animated shooting star paths */}
-        {paths.map((path, index) => (
-          <motion.path
-            key={`path-${index}`}
-            d={path}
-            stroke={`url(#linearGradient-${index})`}
-            strokeOpacity="0.4"
-            strokeWidth="0.5"
-          />
-        ))}
+        {animated &&
+          BEAM_PATHS.map((path, index) => (
+            <path
+              key={`path-${index}`}
+              d={path}
+              stroke={`url(#linearGradient-${index})`}
+              strokeOpacity="0.4"
+              strokeWidth="0.5"
+            />
+          ))}
 
         <defs>
           {/* Animated gradients for shooting star effect */}
-          {paths.map((_, index) => (
-            <motion.linearGradient
-              id={`linearGradient-${index}`}
-              key={`gradient-${index}`}
-              initial={{
-                x1: '0%',
-                x2: '0%',
-                y1: '0%',
-                y2: '0%',
-              }}
-              animate={{
-                x1: ['0%', '100%'],
-                x2: ['0%', '95%'],
-                y1: ['0%', '100%'],
-                y2: ['0%', '95%'],
-              }}
-              transition={{
-                duration: 15 + index * 2, // Slower, staggered durations
-                ease: 'linear',
-                repeat: Infinity,
-                delay: index * 1.5, // Staggered start times
-              }}
-            >
-              <stop stopColor="#18CCFC" stopOpacity="0" />
-              <stop stopColor="#18CCFC" />
-              <stop offset="32.5%" stopColor="#6344F5" />
-              <stop offset="100%" stopColor="#AE48FF" stopOpacity="0" />
-            </motion.linearGradient>
-          ))}
+          {animated &&
+            BEAM_PATHS.map((_, index) => (
+              <motion.linearGradient
+                id={`linearGradient-${index}`}
+                key={`gradient-${index}`}
+                initial={{
+                  x1: '0%',
+                  x2: '0%',
+                  y1: '0%',
+                  y2: '0%',
+                }}
+                animate={{
+                  x1: ['0%', '100%'],
+                  x2: ['0%', '95%'],
+                  y1: ['0%', '100%'],
+                  y2: ['0%', '95%'],
+                }}
+                transition={{
+                  duration: 12 + index * 2, // Slower, staggered durations
+                  ease: 'linear',
+                  repeat: Infinity,
+                  delay: index * 0.6, // Staggered start times
+                }}
+              >
+                <stop stopColor="#22d3ee" stopOpacity="0" />
+                <stop stopColor="#22d3ee" />
+                <stop offset="32.5%" stopColor="#3b82f6" />
+                <stop offset="100%" stopColor="#22c55e" stopOpacity="0" />
+              </motion.linearGradient>
+            ))}
 
           <radialGradient
             id="paint0_radial_242_278"
@@ -112,7 +112,3 @@ export const BackgroundBeams = React.memo(({ className }) => {
 });
 
 BackgroundBeams.displayName = 'BackgroundBeams';
-
-BackgroundBeams.propTypes = {
-  className: PropTypes.string,
-};

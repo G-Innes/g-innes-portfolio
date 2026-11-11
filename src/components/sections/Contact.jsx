@@ -1,40 +1,22 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import emailjs from 'emailjs-com';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
-import { BackgroundGradient } from '../ui/background-gradient';
+import { SpotlightCard } from '../ui/spotlight-card';
+import { Section } from '../ui/section';
 import { ToastContainer } from '../ui/toast';
+
+const SOCIAL_LINKS = [
+  { name: 'LinkedIn', href: 'https://www.linkedin.com/in/grant-innes-0621781a5/' },
+  { name: 'GitHub', href: 'https://github.com/G-Innes' },
+];
 
 // Rate limiting constants
 const RATE_LIMIT_KEY = 'contact_form_last_submit';
 const RATE_LIMIT_COOLDOWN = 60000; // 1 minute cooldown between submissions
 
 // Animation variants
-const sectionVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.1,
-    },
-  },
-};
-
-const headerVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.25, 0.46, 0.45, 0.94],
-    },
-  },
-};
-
 const formVariants = {
   hidden: { opacity: 0, y: 30, scale: 0.98 },
   visible: {
@@ -63,7 +45,7 @@ const fieldVariants = {
 // Loading spinner component
 const LoadingSpinner = () => (
   <svg
-    className="animate-spin h-5 w-5 text-white"
+    className="animate-spin h-5 w-5 text-zinc-950"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
@@ -186,8 +168,9 @@ export const Contact = () => {
 
     const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
     const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-    if (!serviceId || !templateId) {
+    if (!serviceId || !templateId || !publicKey) {
       console.error(
         'EmailJS configuration missing. Please check environment variables.'
       );
@@ -197,7 +180,18 @@ export const Contact = () => {
     }
 
     try {
-      await emailjs.sendForm(serviceId, templateId, e.target);
+      // Loaded on demand so the SDK stays out of the initial bundle
+      const { default: emailjs } = await import('@emailjs/browser');
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          message: formData.message.trim(),
+        },
+        { publicKey }
+      );
 
       // Set rate limit timestamp on successful submission
       setRateLimitTimestamp();
@@ -225,25 +219,10 @@ export const Contact = () => {
   return (
     <>
       <ToastContainer toasts={toasts} removeToast={removeToast} />
-      <section
-        id="contact"
-        className="min-h-screen flex items-center justify-center py-20 px-4"
-      >
-        <motion.div
-          className="w-[360px] sm:w-[600px] lg:w-[800px] mx-auto"
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
-        >
-          <motion.h2
-            className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 bg-clip-text text-transparent text-center"
-            variants={headerVariants}
-          >
-            Get In Touch
-          </motion.h2>
+      <Section id="contact" index="03" label="Contact" title="Get In Touch">
+        <div className="grid gap-10 lg:grid-cols-[1.6fr_1fr] lg:gap-16">
           <motion.div variants={formVariants}>
-            <BackgroundGradient className="p-8 rounded-[22px] bg-zinc-900">
+            <SpotlightCard className="p-5 sm:p-8">
               <form className="space-y-6" onSubmit={handleSubmit}>
                 {/* Honeypot field - hidden from users, visible to bots */}
                 <input
@@ -320,7 +299,7 @@ export const Contact = () => {
                   <motion.button
                     type="submit"
                     disabled={isDisabled}
-                    className="w-full bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 text-white font-medium py-3 px-6 rounded-[20px] transition relative overflow-hidden hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="w-full bg-gradient-to-r from-blue-500 via-cyan-400 to-green-500 text-zinc-950 font-semibold py-3 px-6 rounded-[20px] transition-shadow duration-200 relative overflow-hidden hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     whileHover={isDisabled ? {} : { scale: 1.01, y: -2 }}
                     whileTap={isDisabled ? {} : { scale: 0.99 }}
                   >
@@ -359,10 +338,32 @@ export const Contact = () => {
                   </motion.button>
                 </motion.div>
               </form>
-            </BackgroundGradient>
+            </SpotlightCard>
           </motion.div>
-        </motion.div>
-      </section>
+
+          {/* Direct links, for anyone who would rather not use a form */}
+          <motion.div
+            className="flex flex-col items-center gap-4 lg:items-start lg:pt-8"
+            variants={formVariants}
+          >
+            <p className="bg-ink px-3 font-mono text-xs uppercase tracking-[0.2em] text-gray-500 lg:px-0">
+              Let&apos;s connect
+            </p>
+            {SOCIAL_LINKS.map(({ name, href }) => (
+              <motion.a
+                key={name}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-ink px-3 font-display text-3xl font-bold tracking-tight text-white transition-colors duration-200 hover:text-cyan-300 lg:px-0 lg:text-4xl"
+                whileHover={{ x: 4 }}
+              >
+                {name} <span className="text-gray-600">↗</span>
+              </motion.a>
+            ))}
+          </motion.div>
+        </div>
+      </Section>
     </>
   );
 };

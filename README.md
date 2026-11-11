@@ -55,6 +55,8 @@ npm run dev
 npm run build
 ```
 
+The build also prerenders the page to static HTML (`scripts/prerender.mjs`), so the content in `dist/index.html` exists before any JavaScript runs. The client then hydrates it.
+
 ### Deployment on Vercel
 
 When deploying to Vercel, make sure to add the following environment variables in your project settings:
