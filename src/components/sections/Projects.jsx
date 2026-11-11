@@ -114,10 +114,11 @@ const UpcomingProject = ({ title, description, tech }) => (
 export const Projects = () => {
   const projects = [
     {
-      title: 'Project 1',
-      description: 'Coming soon...',
+      title: 'THE4',
+      description:
+        "In development: a mobile-first product I'm building now. More once it's public.",
       image: null,
-      tech: ['React', 'Node.js', 'AWS'],
+      tech: ['React Native', 'Expo', 'Laravel', 'PostgreSQL'],
       liveUrl: null,
       githubUrl: null,
     },
@@ -158,7 +159,7 @@ export const Projects = () => {
       githubUrl: 'https://github.com/G-Innes/AssetTrackr',
     },
     {
-      title: 'Fleet Fox Task Management',
+      title: 'Fleet Flow',
       description:
         'Production-ready task management application with categories, priorities, and CSV import/export. Features user isolation, due date tracking, and comprehensive filtering. Built with Laravel 12, Vue 3, and Inertia.js with full PEST test coverage.',
       image: FFHero,

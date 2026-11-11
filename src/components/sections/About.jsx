@@ -33,17 +33,47 @@ const testimonialVariants = {
 };
 
 export const About = () => {
-  const frontendSkills = [
-    'React',
-    'Vue.js',
-    'TypeScript',
-    'Tailwind CSS',
-    'Next.js',
-  ];
-  const backendSkills = ['Node.js', 'PostgreSQL', 'PHP', 'Laravel'];
   const skillGroups = [
-    { title: 'Frontend', skills: frontendSkills },
-    { title: 'Backend', skills: backendSkills },
+    {
+      title: 'Frontend',
+      skills: ['React', 'Next.js', 'Vue.js', 'TypeScript', 'Tailwind CSS'],
+    },
+    { title: 'Mobile', skills: ['React Native', 'Expo'] },
+    {
+      title: 'Backend',
+      skills: ['Laravel', 'PHP', 'Node.js', 'PostgreSQL', 'Redis'],
+    },
+  ];
+
+  const workExperience = [
+    {
+      role: 'Founding Engineer',
+      company: 'THE4',
+      period: 'Jun 2026 – Present',
+      summary:
+        'Building a mobile-first product from the ground up: a React Native and Expo app on a Laravel and PostgreSQL backend, in a single monorepo.',
+    },
+    {
+      role: 'Full-Stack Developer',
+      company: 'FleetFox',
+      period: 'Oct 2025 – Present',
+      summary:
+        'Building web applications that streamline day-to-day operations in the fleet-management industry, from architecture through to continuous delivery.',
+    },
+    {
+      role: 'Full-Stack Engineer',
+      company: 'Freelance',
+      period: 'Oct 2023 – Present',
+      summary:
+        'Designing, building and running complete products for clients: APIs, interfaces, data models, deployments and releases, including revenue-generating systems in production.',
+    },
+    {
+      role: 'Full-Stack Engineer',
+      company: 'Glafos',
+      period: 'Aug 2024 – Oct 2025',
+      summary:
+        'Delivered full-stack web applications with data integrations, scalable backend services and responsive interfaces, covering CI/CD and performance work.',
+    },
   ];
 
   const testimonials = [
@@ -128,12 +158,13 @@ export const About = () => {
 
             <div className="flex flex-1 flex-col p-5 sm:p-7">
               <p className="mb-6 text-sm leading-relaxed text-gray-300 sm:text-base">
-                As a fullstack developer, I specialize in building robust and
-                elegant digital experiences from the ground up. I believe that
-                great software starts with clean architecture, thoughtful
-                interfaces, and a deep respect for the people using it. From
-                backend logic to frontend polish, I bring clarity,
-                performance, and purpose to every line of code.
+                I got into software by breaking things to see how they worked,
+                then putting them back together better. That habit stuck.
+                Today I build whole products: React, Next.js and React Native
+                up front, Laravel and Node behind them, PostgreSQL underneath,
+                and the pipelines that ship it all. I work remotely, I&apos;m
+                happy in a hybrid setup, and I like the part where
+                someone&apos;s rough idea becomes a thing people use.
               </p>
 
               <div className="grid grid-cols-1 gap-5">
@@ -168,30 +199,17 @@ export const About = () => {
                 Work Experience
               </h3>
               <div className="space-y-5 border-l border-white/10 pl-5 text-gray-300">
-                <div>
-                  <h4 className="font-sans text-base font-semibold tracking-normal text-white">
-                    Senior Software Engineer at TechCorp (2020-present)
-                  </h4>
-                  <p className="mt-1 text-sm text-gray-400">
-                    Developed microservices for cloud-based applications
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-sans text-base font-semibold tracking-normal text-white">
-                    Software Engineer at StartupXYZ
-                  </h4>
-                  <p className="mt-1 text-sm text-gray-400">
-                    Built scalable backend systems and APIs
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-sans text-base font-semibold tracking-normal text-white">
-                    Junior Developer at WebAgency
-                  </h4>
-                  <p className="mt-1 text-sm text-gray-400">
-                    Full-stack development and client projects
-                  </p>
-                </div>
+                {workExperience.map(({ role, company, period, summary }) => (
+                  <div key={company}>
+                    <h4 className="font-sans text-base font-semibold tracking-normal text-white">
+                      {role} <span className="text-gray-500">·</span> {company}
+                    </h4>
+                    <p className="mt-1 font-mono text-xs text-gray-500">
+                      {period}
+                    </p>
+                    <p className="mt-2 text-sm text-gray-400">{summary}</p>
+                  </div>
+                ))}
               </div>
             </SpotlightCard>
           </motion.div>

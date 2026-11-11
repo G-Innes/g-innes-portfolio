@@ -11,14 +11,15 @@ import GitIcon from '/assets/dev-icons/git-new.svg';
 
 const TECH_ICONS = [
   { icon: ReactIcon, name: 'React' },
+  { icon: ReactIcon, name: 'React Native' },
+  { icon: NextIcon, name: 'Next.js' },
   { icon: VueIcon, name: 'Vue.js' },
   { icon: TypeScriptIcon, name: 'TypeScript' },
-  { icon: NodeIcon, name: 'Node.js' },
-  { icon: NextIcon, name: 'Next.js' },
   { icon: TailwindIcon, name: 'Tailwind CSS' },
-  { icon: PostgresIcon, name: 'PostgreSQL' },
-  { icon: PhpIcon, name: 'PHP' },
   { icon: LaravelIcon, name: 'Laravel' },
+  { icon: PhpIcon, name: 'PHP' },
+  { icon: NodeIcon, name: 'Node.js' },
+  { icon: PostgresIcon, name: 'PostgreSQL' },
   { icon: GitIcon, name: 'Git' },
 ];
 
